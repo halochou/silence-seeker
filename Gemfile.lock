@@ -1,0 +1,10 @@
+GEM
+  remote: http://gemcutter.org/
+  specs:
+    ruby-audio (1.6.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  ruby-audio

@@ -1,5 +1,7 @@
 *.gem
 *.rbc
+*.mp3
+*.wav
 /.config
 /coverage/
 /InstalledFiles
