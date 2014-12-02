@@ -11,11 +11,12 @@ class SilenceSeeker
 
   def initialize
     @silence_limit = 0.02
-    @silence_length = 0.6
+    @silence_length = 0.5
   end
 
   def seek(input)
 
+    @frames = input.info.frames
     @rate = input.info.samplerate
     @channels = input.info.channels
     @samples = @rate * 60
@@ -26,6 +27,8 @@ class SilenceSeeker
     buf = RubyAudio::Buffer.new("float", @samples, input.info.channels)
 
     past_time = 0    #seconds
+    print '0 '
+
     while input.read(buf) != 0
 
       @input_samples += buf.real_size
@@ -34,7 +37,7 @@ class SilenceSeeker
 
       while pos < buf.real_size
         silence_start, silence_length = find_silence(buf, pos)
-        print past_time + silence_start / @rate, "s\n", past_time + (silence_start + silence_length) / @rate, "s -> " if !silence_start.nil?
+        print past_time + silence_start / @rate, "\n", past_time + (silence_start + silence_length) / @rate, " " if !silence_start.nil?
 
         if !silence_start.nil?
           pos = silence_start + silence_length
@@ -47,6 +50,9 @@ class SilenceSeeker
       past_time += 60
 
     end
+
+    print @frames / @rate
+
   end
 
   def find_silence(buf, position)
